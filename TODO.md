@@ -264,4 +264,11 @@ Live URLs:
 - Index: https://leadershipshape.com/nexco-dashboard/
 - NOVA Core: https://leadershipshape.com/nexco-dashboard/nexco-novacore/
 
-Last Updated: 2026-01-03
+## Enhancements Added
+
+- [x] Manual refresh button (2026-01-04)
+  - Button in controls row with spinning animation
+  - Cache-busting for data.json reload
+  - Success notification on completion
+
+Last Updated: 2026-01-04
