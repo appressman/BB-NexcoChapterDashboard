@@ -9,6 +9,7 @@ from datetime import date
 from typing import Optional
 
 import date_utils
+import meeting_calendar
 
 
 @dataclass
@@ -48,7 +49,9 @@ def parse_guest_tracker(rows: list) -> list:
             continue
 
         try:
-            meeting_date = date_utils.parse_meeting_date(date_str)
+            raw_date = date_utils.parse_meeting_date(date_str)
+            # Snap to actual meeting date (2nd or 4th Wednesday)
+            meeting_date = meeting_calendar.snap_to_meeting_date(raw_date)
         except ValueError:
             continue
 

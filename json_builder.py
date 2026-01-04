@@ -35,8 +35,12 @@ def meeting_stats_to_dict(stats) -> dict:
 
 
 def followup_to_dict(followup) -> dict:
-    """Convert FollowUpCount to dict."""
-    return asdict(followup)
+    """Convert FollowUpCount to dict, including all fields."""
+    d = asdict(followup)
+    # Ensure is_section_header is included (default False for backwards compat)
+    if 'is_section_header' not in d:
+        d['is_section_header'] = False
+    return d
 
 
 def build_data_json(

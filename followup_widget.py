@@ -17,7 +17,8 @@ class FollowUpCount:
     name: str
     count: int
     is_special: bool  # True for Unassigned, Ambiguous
-    is_raw_token: bool  # True for unmatched names
+    is_raw_token: bool  # True for unmatched/prior member names
+    is_section_header: bool = False  # True for section headers like "Prior Members"
 
 
 def calculate_followups(guests: list, matcher: NameMatcher) -> list:
@@ -91,7 +92,7 @@ def calculate_followups(guests: list, matcher: NameMatcher) -> list:
             is_raw_token=False
         ))
 
-    # Raw tokens (unmatched) - sorted alphabetically
+    # Raw tokens (unmatched/prior members) - sorted alphabetically
     raw_list = []
     for token in raw_tokens:
         raw_list.append(FollowUpCount(
@@ -101,7 +102,17 @@ def calculate_followups(guests: list, matcher: NameMatcher) -> list:
             is_raw_token=True
         ))
     raw_list.sort(key=lambda x: x.name.lower())
-    result.extend(raw_list)
+
+    # Add "Prior Members" section header if there are unmatched names
+    if raw_list:
+        result.append(FollowUpCount(
+            name="Prior Members / Unmatched",
+            count=sum(item.count for item in raw_list),
+            is_special=False,
+            is_raw_token=False,
+            is_section_header=True
+        ))
+        result.extend(raw_list)
 
     return result
 

@@ -76,6 +76,14 @@ def scrape_roster(roster_url: str, timeout: int = 30) -> list:
             if name and looks_like_name(name):
                 names.add(normalize_scraped_name(name))
 
+    # Pattern 2b: AccessAlly directory format - names in <strong> inside directory items
+    # e.g., <div class="accessally-user-directory-description-item..."><strong>Name Here</strong></div>
+    accessally_pattern = r'class="accessally-user-directory-description-item[^"]*"[^>]*>\s*<strong>([^<]+)</strong>'
+    for match in re.finditer(accessally_pattern, html, re.IGNORECASE):
+        name = match.group(1).strip()
+        if name and looks_like_name(name):
+            names.add(normalize_scraped_name(name))
+
     # Pattern 3: Look for capitalized name patterns in link text
     link_pattern = r'<a[^>]+>([A-Z][a-z]+ [A-Z][a-z]+[^<]*)</a>'
     for match in re.finditer(link_pattern, html):
@@ -94,7 +102,7 @@ def looks_like_name(text: str) -> bool:
     if len(parts) > 5:
         return False
 
-    non_name_patterns = [r"\d", r"@", r"http", r"\.com", r"click", r"here", r"read more"]
+    non_name_patterns = [r"\d", r"@", r"http", r"\.com", r"click", r"here", r"read more", r"calendar", r"event"]
     for pattern in non_name_patterns:
         if re.search(pattern, text, re.IGNORECASE):
             return False

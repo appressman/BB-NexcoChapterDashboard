@@ -11,8 +11,13 @@ def tokenize_followups(followup_str: str) -> list:
     """
     Split follow-up string into individual name tokens.
 
+    Supports multiple delimiters:
+    - Comma: "Dan, Adam"
+    - Slash: "Dan/Luanne" or "Dan/Adam/Jasleen/Rohini"
+    - Ampersand: "Dan & Luanne"
+
     Args:
-        followup_str: Comma-separated follow-up names
+        followup_str: Delimited follow-up names
 
     Returns:
         List of trimmed, non-empty tokens
@@ -20,7 +25,8 @@ def tokenize_followups(followup_str: str) -> list:
     if not followup_str or not followup_str.strip():
         return []
 
-    tokens = followup_str.split(",")
+    # Split on comma, slash, or ampersand
+    tokens = re.split(r'[,/&]', followup_str)
     return [t.strip() for t in tokens if t.strip()]
 
 
@@ -64,7 +70,8 @@ def normalize_name_heavy(token: str) -> str:
     result = re.sub(r"\[[^\[\]]*\]", "", result)
 
     # Remove trailing annotations after -, —, –, :
-    result = re.sub(r"[-—–:].+$", "", result)
+    # Use .* instead of .+ to also strip bare trailing colons like "Adam:"
+    result = re.sub(r"[-—–:].*$", "", result)
 
     # Final cleanup
     return " ".join(result.split())
