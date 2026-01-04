@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>neXco NOVA Core Dashboard</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+    <header class="dashboard-header">
+        <a href="https://nexconational.com/" target="_blank" rel="noopener noreferrer">
+            <img src="../assets/img/nexco-logo.png" alt="neXco National" class="logo">
+        </a>
+        <h1 id="page-title">Loading...</h1>
+    </header>
+
+    <main>
+        <!-- Month Selector Row -->
+        <section class="controls-row">
+            <div class="month-selector-container">
+                <input type="month" id="month-picker" aria-label="Select month">
+                <div id="month-fallback" class="hidden">
+                    <select id="month-select" aria-label="Month"></select>
+                    <select id="year-select" aria-label="Year"></select>
+                </div>
+            </div>
+            <button id="refresh-btn" class="refresh-button" aria-label="Refresh data">
+                <span class="refresh-icon">&#8635;</span>
+                <span class="refresh-text">Refresh</span>
+            </button>
+            <div class="meta-info">
+                <span id="last-updated"></span>
+                <span id="stale-warning" class="warning hidden"></span>
+            </div>
+        </section>
+
+        <!-- Status Notice -->
+        <div id="status-notice" role="status" aria-live="polite" class="hidden"></div>
+
+        <!-- Chart Section -->
+        <section class="chart-section">
+            <div class="chart-legend">
+                <span class="legend-item"><span class="color-box attended"></span> Attended</span>
+                <span class="legend-item"><span class="color-box no-show"></span> No-Show</span>
+            </div>
+            <canvas id="attendance-chart"></canvas>
+        </section>
+
+        <!-- RSVP Counts -->
+        <section class="rsvp-counts-section">
+            <h2>RSVP Counts</h2>
+            <ul id="rsvp-counts-list"></ul>
+        </section>
+
+        <!-- Follow-Up Widget -->
+        <section class="followup-section">
+            <h2>Follow-Ups Assigned</h2>
+            <ul id="followup-list"></ul>
+        </section>
+
+        <!-- Open Seats -->
+        <section class="open-seats-section">
+            <h2>Top Open Seats</h2>
+            <table id="open-seats-table"></table>
+        </section>
+
+        <!-- Guest Tables -->
+        <section class="guests-section">
+            <h2>Attended Guests</h2>
+            <input type="text" id="attended-filter" placeholder="Filter guests..." class="table-filter">
+            <table id="attended-table"></table>
+        </section>
+
+        <section class="guests-section">
+            <h2>No-Shows</h2>
+            <input type="text" id="no-show-filter" placeholder="Filter guests..." class="table-filter">
+            <table id="no-show-table"></table>
+        </section>
+
+        <section class="guests-section">
+            <h2>Guests without RSVPs</h2>
+            <input type="text" id="without-rsvp-filter" placeholder="Filter guests..." class="table-filter">
+            <table id="without-rsvp-table"></table>
+        </section>
+    </main>
+
+    <script src="../assets/vendor/chartjs/4.5.1/chart.umd.min.js"></script>
+    <script src="../assets/js/dashboard.js"></script>
+</body>
+</html>
